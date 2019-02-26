@@ -22,7 +22,7 @@
       <template id="tabbar.html">
         <ons-page id="tabbar-page">
           <ons-toolbar>
-            <div class="center">Home</div>
+            <div class="center">ホーム</div>
             <div class="right">
               <ons-toolbar-button onclick="fn.toggleMenu()">
                 <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
@@ -170,6 +170,11 @@
             This is a kitchen sink example that shows off the components of Onsen UI.<br><br>
           </p>
       
+          <ons-card onclick="fn.pushPage({'id': 'power.html', 'title': 'mW & dBm'})">
+            <div class="title">mW & dBm </div>
+            <div class="content">dBm と mW の単位変換を行います。</div>
+          </ons-card>
+
           <ons-card onclick="fn.pushPage({'id': 'pullHook.html', 'title': 'PullHook'})">
             <div class="title">Pull Hook</div>
             <div class="content">Simple "pull to refresh" functionality to update data.</div>
@@ -210,6 +215,67 @@
             .card__title,
             .card--material__title {
               font-size: 20px;
+            }
+          </style>
+        </ons-page>
+      </template>
+
+      <template id="power.html">
+        <ons-page id="power-page">
+          <ons-toolbar>
+            <div class="left">
+              <ons-back-button>ホーム</ons-back-button>
+            </div>
+            <div class="center"></div>
+            <div class="right">
+              <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
+            </div>
+          </ons-toolbar>
+          <ons-list>
+            <ons-list-header>変換方式</ons-list-header>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio class="radio-direction" input-id="radio-to-mw" value="toMw" checked></ons-radio>
+              </label>
+              <label for="radio-to-mw" class="center">dBmからmWへ変換する</label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio class="radio-direction" input-id="radio-to-dbm" value="toDbm"></ons-radio>
+              </label>
+              <label for="radio-to-dbm" class="center">mWからdBmへ変換する</label>
+            </ons-list-item>
+            <ons-list-item>
+              <div id="selected-dir" class="center">
+                toMw
+              </div>
+            </ons-list-item>
+          </ons-list>
+
+          <script>
+            ons.getScriptPage().onInit = function () {
+              var currentDirectionId = 'radio-to-mw';
+              const radios = document.querySelectorAll('.radio-direction')
+              for (var i = 0; i < radios.length; i++) {
+                var radio = radios[i];
+                radio.addEventListener('change', function (event) {
+                  if (event.target.id !== currentDirectionId) {
+                    document.getElementById('selected-dir').innerHTML = `${event.target.value}`;
+                    document.getElementById(currentDirectionId).checked = false;
+                    currentDirectionId = event.target.id;
+                  }
+                })
+              }
+            }
+          </script>
+      
+          <style>
+            #lorem-dialog .dialog-container {
+              height: 200px;
+            }
+      
+            ons-list-title {
+              margin-top: 20px;
             }
           </style>
         </ons-page>
@@ -281,7 +347,7 @@
               </div>
             </ons-list-item>
       
-            <ons-list-header>Radio buttons</ons-list-header>
+            <!-- <ons-list-header>Radio buttons</ons-list-header>
             <ons-list-item tappable>
               <label class="left">
                 <ons-radio class="radio-fruit" input-id="radio-0" value="Apples"></ons-radio>
@@ -304,7 +370,7 @@
               <div id="fruit-love" class="center">
                 I love Bananas!
               </div>
-            </ons-list-item>
+            </ons-list-item> -->
       
             <ons-list-header>Checkboxes - <span id="checkboxes-header">Green,Blue</span></ons-list-header>
             <ons-list-item tappable>
