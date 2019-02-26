@@ -258,6 +258,15 @@
 
           <script>
             ons.getScriptPage().onInit = function () {
+              if (ons.platform.isAndroid()) {
+                const inputItems = document.querySelectorAll('.input-items');
+                for (i = 0; i < inputItems.length; i++) {
+                  inputItems[i].hasAttribute('modifier') ?
+                    inputItems[i].setAttribute('modifier', inputItems[i].getAttribute('modifier') + ' nodivider') :
+                    inputItems[i].setAttribute('modifier', 'nodivider');
+                }
+              }
+
               var currentDirectionId = 'radio-to-mw';
               const radios = document.querySelectorAll('.radio-direction')
               for (var i = 0; i < radios.length; i++) {
