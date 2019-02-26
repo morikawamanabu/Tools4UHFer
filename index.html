@@ -235,20 +235,24 @@
             <ons-list-header>変換方式</ons-list-header>
             <ons-list-item tappable>
               <label class="left">
-                <ons-radio class="radio-direction" input-id="radio-to-mw" value="toMw" checked></ons-radio>
+                <ons-radio class="radio-direction" input-id="radio-to-mw" value="dBm" checked></ons-radio>
               </label>
               <label for="radio-to-mw" class="center">dBmからmWへ変換する</label>
             </ons-list-item>
             <ons-list-item tappable>
               <label class="left">
-                <ons-radio class="radio-direction" input-id="radio-to-dbm" value="toDbm"></ons-radio>
+                <ons-radio class="radio-direction" input-id="radio-to-dbm" value="mW"></ons-radio>
               </label>
               <label for="radio-to-dbm" class="center">mWからdBmへ変換する</label>
             </ons-list-item>
-            <ons-list-item>
-              <div id="selected-dir" class="center">
-                toMw
-              </div>
+            <ons-list-header>変換</ons-list-header>
+              <ons-list-item class="input-items">
+                <div class="left">
+                  <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+                </div>
+                <label class="center">
+                <ons-input input-id="value-input" float maxlength="10" placeholder="dBm での値を入力"></ons-input>
+              </label>
             </ons-list-item>
           </ons-list>
 
@@ -260,8 +264,8 @@
                 var radio = radios[i];
                 radio.addEventListener('change', function (event) {
                   if (event.target.id !== currentDirectionId) {
-                    document.getElementById('selected-dir').innerHTML = `${event.target.value}`;
                     document.getElementById(currentDirectionId).checked = false;
+                    document.getElementById('value-input').placeholder = `${event.target.value} での値を入力`;
                     currentDirectionId = event.target.id;
                   }
                 })
