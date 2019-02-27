@@ -246,12 +246,15 @@
               <label for="radio-to-dbm" class="center">mWからdBmへ変換する</label>
             </ons-list-item>
             <ons-list-header>変換</ons-list-header>
-              <ons-list-item class="input-items">
-                <div class="left">
-                  <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
-                </div>
-                <label class="center">
-                <ons-input input-id="value-input" float maxlength="10" placeholder="dBm での値を入力"></ons-input>
+            <ons-list-item class="input-items">
+              <div class="left">
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <label class="center">
+                <ons-input input-id="value-input" float maxlength="10" placeholder="値を入力"></ons-input>
+              </label>
+              <label class="right" id="value-unit">
+                ( dBm )
               </label>
             </ons-list-item>
           </ons-list>
@@ -274,7 +277,7 @@
                 radio.addEventListener('change', function (event) {
                   if (event.target.id !== currentDirectionId) {
                     document.getElementById(currentDirectionId).checked = false;
-                    document.getElementById('value-input').placeholder = `${event.target.value} での値を入力`;
+                    document.getElementById('value-unit').innerHTML = `( ${event.target.value} )`;
                     currentDirectionId = event.target.id;
                   }
                 })
