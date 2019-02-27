@@ -264,6 +264,9 @@
                 <label id="result-unit"> mW  </label>
                 <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
               </div>
+              <label class="center" id="convert-result">
+                  
+              </label>
             </ons-list-item>
           </ons-list>
 
@@ -277,6 +280,20 @@
                     inputItems[i].setAttribute('modifier', 'nodivider');
                 }
               }
+
+              function getBaseLog(x, y) {
+                return Math.log(y) / Math.log(x);
+              }
+              function roundValue(val) {
+                return Math.round(val * 10) / 10
+              }
+              function isNumber(numVal){
+                // チェック条件パターン
+                var pattern = /^[+,-]?([1-9]\d*|0)(\.\d+)?$/;
+                // 数値チェック
+                return pattern.test(numVal);
+              }
+              
 
               var currentDirectionId = 'radio-to-mw';
               const radios = document.querySelectorAll('.radio-direction')
@@ -297,7 +314,12 @@
                 if (currentDirectionId == 'radio-to-mw') {
                   console.log('dBm :'+valueInput.value);
                 } else {
-                  console.log('mW :'+valueInput.value);
+                  if (!isNumber(valueInput.value)) {
+                    console.log("invalid");
+                    //ここでnotificationをだす
+                    return;
+                  }
+                  document.getElementById('convert-result').innerHTML = roundValue( getBaseLog(10,valueInput.value - 0) * 10) ;
                 }
                 
                 // nameInput.value = event.target.value;
