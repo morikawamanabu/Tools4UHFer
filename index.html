@@ -248,14 +248,22 @@
             <ons-list-header>変換</ons-list-header>
             <ons-list-item class="input-items">
               <div class="left">
+                <label id="value-unit"> dBm </label>
                 <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
               </div>
               <label class="center">
                 <ons-input input-id="value-input" float maxlength="10" placeholder="値を入力"></ons-input>
               </label>
-              <label class="right" id="value-unit">
-                ( dBm )
-              </label>
+              <div class="right">
+                <ons-button modifier="cta" class="button-margin" id="button-convert">変換する</ons-button>
+              </div>
+            </ons-list-item>
+            <ons-list-header>変換結果</ons-list-header>
+            <ons-list-item class="inputed-items">
+              <div class="left">
+                <label id="result-unit"> mW  </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
             </ons-list-item>
           </ons-list>
 
@@ -277,11 +285,26 @@
                 radio.addEventListener('change', function (event) {
                   if (event.target.id !== currentDirectionId) {
                     document.getElementById(currentDirectionId).checked = false;
-                    document.getElementById('value-unit').innerHTML = `( ${event.target.value} )`;
+                    document.getElementById('value-unit').innerHTML = ` ${event.target.value} `;
+                    document.getElementById('result-unit').innerHTML = `${event.target.value}` == 'dBm' ? ' mW ' : ' dBm ';
                     currentDirectionId = event.target.id;
                   }
                 })
               }
+              var convertButton = document.getElementById('button-convert');
+              var valueInput = document.getElementById('value-input');
+              var doConvert = function (event) {
+                if (currentDirectionId == 'radio-to-mw') {
+                  console.log('dBm :'+valueInput.value);
+                } else {
+                  console.log('mW :'+valueInput.value);
+                }
+                
+                // nameInput.value = event.target.value;
+                // searchInput.value = event.target.value;
+                // document.getElementById('name-display').innerHTML = event.target.value !== '' ? `Hello ${event.target.value}!` : 'Hello anonymous!';
+              }
+              convertButton.addEventListener('click', doConvert);
             }
           </script>
       
