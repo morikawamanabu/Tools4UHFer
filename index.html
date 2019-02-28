@@ -447,7 +447,7 @@
             <ons-list-header>PC入力</ons-list-header>
             <ons-list-item class="input-items">
               <div class="left">
-                <label id="value-pc"> TID </label>
+                <label id="value-pc"> PC </label>
                 <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
               </div>
               <label class="center">
@@ -455,6 +455,43 @@
               </label>
               <div class="right">
                 <ons-button modifier="cta" class="button-margin" id="button-pc-convert">変換する</ons-button>
+              </div>
+            </ons-list-item>
+            <ons-list-header>変換結果</ons-list-header>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-epcLength"> EPC長 (bit) </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-epcLength">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-umi"> UMI : User-memory indicator </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-umi">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-xi"> XI : XPC_W1 indicator </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-xi">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-nsi"> NSI : Numbering System Identifier </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-nsi">  </label>
               </div>
             </ons-list-item>
           </ons-list>
@@ -472,18 +509,46 @@
 
               function isValidPc(numVal){
                 // 4文字の16進数を許可する
-                var pattern = /^[0-9A-Fa-f]{8}$/;
+                var pattern = /^[0-9A-Fa-f]{4}$/;
                 return pattern.test(numVal);
+              }
+              function pcToBit(str) {
+                var bits = parseInt(pcInput.value, 16).toString(2);
+                while (bits.length < 16) {
+                  bits = '0' + bits; 
+                }
+                return bits;
+              }
+              function parsePcBits(bits) {
+                return {
+                          'EpcLength': bits.substr(0,5), 
+                          'UMI': bits.substr(5,1), 
+                          'XI': bits.substr(6,1), 
+                          'NSI': bits.substr(7,1)
+                        };
+              }
+              function calcEpcLen(str) {
+                return parseInt(str, 2) * 2 * 8;
               }
 
               var convertPcButton = document.getElementById('button-pc-convert');
               var pcInput = document.getElementById('pc-input');
+              var epcLengthLabel = document.getElementById('label-value-epcLength');
+              var umiLabel = document.getElementById('label-value-umi');
+              var xiLabel = document.getElementById('label-value-xi');
+              var nsiLabel = document.getElementById('label-value-nsi');
               var doPcConvert = function (event) {
                 if (!isValidPc(pcInput.value)) {
                   ons.notification.alert('16進数を入力してください');
                   return;
                 }
                 console.log(pcInput.value);
+                console.log(pcToBit(pcInput.value));
+                var pcConfs = parsePcBits( pcToBit( pcInput.value ));
+                epcLengthLabel.innerText = calcEpcLen(pcConfs['EpcLength']);
+                umiLabel.innerText = pcConfs['UMI'];
+                xiLabel.innerText = pcConfs['XI'];
+                nsiLabel.innerText = pcConfs['NSI'];
               }
               convertPcButton.addEventListener('click', doPcConvert);
             }
