@@ -545,10 +545,10 @@
                 console.log(pcInput.value);
                 console.log(pcToBit(pcInput.value));
                 var pcConfs = parsePcBits( pcToBit( pcInput.value ));
-                epcLengthLabel.innerText = calcEpcLen(pcConfs['EpcLength']);
-                umiLabel.innerText = pcConfs['UMI'];
-                xiLabel.innerText = pcConfs['XI'];
-                nsiLabel.innerText = pcConfs['NSI'];
+                epcLengthLabel.innerHTML = calcEpcLen(pcConfs['EpcLength']);
+                umiLabel.innerHTML = pcConfs['UMI'];
+                xiLabel.innerHTML = pcConfs['XI'];
+                nsiLabel.innerHTML = pcConfs['NSI'];
               }
               convertPcButton.addEventListener('click', doPcConvert);
             }
@@ -563,10 +563,6 @@
               margin-top: 20px;
             }
           </style>
-
-          <script>
-            
-          </script>
         </ons-page>
       </template>
       
