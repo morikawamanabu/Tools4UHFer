@@ -293,13 +293,23 @@
                 // 数値チェック
                 return pattern.test(numVal);
               }
-              
+              function convertToMw(val) {
+                return roundValue( getBaseLog(10,val) * 10);
+              }
+              function convertToDbm(val) {
+                return roundValue( 10 ** (val / 10) );
+              }
+              function clearValues() {
+                document.getElementById('value-input').value = "";
+                document.getElementById('convert-result').innerHTML = "";
+              }
 
               var currentDirectionId = 'radio-to-mw';
               const radios = document.querySelectorAll('.radio-direction')
               for (var i = 0; i < radios.length; i++) {
                 var radio = radios[i];
                 radio.addEventListener('change', function (event) {
+                  clearValues();
                   if (event.target.id !== currentDirectionId) {
                     document.getElementById(currentDirectionId).checked = false;
                     document.getElementById('value-unit').innerHTML = ` ${event.target.value} `;
@@ -312,19 +322,18 @@
               var valueInput = document.getElementById('value-input');
               var doConvert = function (event) {
                 if (currentDirectionId == 'radio-to-mw') {
-                  console.log('dBm :'+valueInput.value);
-                } else {
                   if (!isNumber(valueInput.value)) {
-                    console.log("invalid");
-                    //ここでnotificationをだす
+                    ons.notification.alert('数値を入力してください');
                     return;
                   }
-                  document.getElementById('convert-result').innerHTML = roundValue( getBaseLog(10,valueInput.value - 0) * 10) ;
+                  document.getElementById('convert-result').innerHTML = convertToDbm(valueInput.value - 0);
+                } else {
+                  if (!isNumber(valueInput.value)) {
+                    ons.notification.alert('数値を入力してください');
+                    return;
+                  }
+                  document.getElementById('convert-result').innerHTML = convertToMw(valueInput.value - 0);
                 }
-                
-                // nameInput.value = event.target.value;
-                // searchInput.value = event.target.value;
-                // document.getElementById('name-display').innerHTML = event.target.value !== '' ? `Hello ${event.target.value}!` : 'Hello anonymous!';
               }
               convertButton.addEventListener('click', doConvert);
             }
