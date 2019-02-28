@@ -176,7 +176,11 @@
           </ons-card>
           <ons-card onclick="fn.pushPage({'id': 'tid.html', 'title': 'TID'})">
             <div class="title">TID情報</div>
-            <div class="content">TID からタグのメーカー等を判別します。</div>
+            <div class="content">入力されたTIDからタグの情報を調べます。</div>
+          </ons-card>
+          <ons-card onclick="fn.pushPage({'id': 'pc.html', 'title': 'PC'})">
+            <div class="title">PC情報</div>
+            <div class="content">入力されたPCの情報を表示します。</div>
           </ons-card>
 
 
@@ -428,6 +432,78 @@
         </ons-page>
       </template>
 
+      <template id="pc.html">
+        <ons-page id="pc-page">
+          <ons-toolbar>
+            <div class="left">
+              <ons-back-button>PC情報</ons-back-button>
+            </div>
+            <div class="center"></div>
+            <div class="right">
+              <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
+            </div>
+          </ons-toolbar>
+          <ons-list>
+            <ons-list-header>PC入力</ons-list-header>
+            <ons-list-item class="input-items">
+              <div class="left">
+                <label id="value-pc"> TID </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <label class="center">
+                <ons-input input-id="pc-input" float maxlength="4" placeholder="PCを入力"></ons-input>
+              </label>
+              <div class="right">
+                <ons-button modifier="cta" class="button-margin" id="button-pc-convert">変換する</ons-button>
+              </div>
+            </ons-list-item>
+          </ons-list>
+
+          <script>
+            ons.getScriptPage().onInit = function () {
+              if (ons.platform.isAndroid()) {
+                const inputItems = document.querySelectorAll('.input-items');
+                for (i = 0; i < inputItems.length; i++) {
+                  inputItems[i].hasAttribute('modifier') ?
+                    inputItems[i].setAttribute('modifier', inputItems[i].getAttribute('modifier') + ' nodivider') :
+                    inputItems[i].setAttribute('modifier', 'nodivider');
+                }
+              }
+
+              function isValidPc(numVal){
+                // 4文字の16進数を許可する
+                var pattern = /^[0-9A-Fa-f]{8}$/;
+                return pattern.test(numVal);
+              }
+
+              var convertPcButton = document.getElementById('button-pc-convert');
+              var pcInput = document.getElementById('pc-input');
+              var doPcConvert = function (event) {
+                if (!isValidPc(pcInput.value)) {
+                  ons.notification.alert('16進数を入力してください');
+                  return;
+                }
+                console.log(pcInput.value);
+              }
+              convertPcButton.addEventListener('click', doPcConvert);
+            }
+          </script>
+      
+          <style>
+            #lorem-dialog .dialog-container {
+              height: 200px;
+            }
+      
+            ons-list-title {
+              margin-top: 20px;
+            }
+          </style>
+
+          <script>
+            
+          </script>
+        </ons-page>
+      </template>
       
       <template id="forms.html">
         <ons-page id="forms-page">
