@@ -174,6 +174,11 @@
             <div class="title">電波出力 単位変換</div>
             <div class="content">電波出力の単位 dBm と mW の単位変換を行います。</div>
           </ons-card>
+          <ons-card onclick="fn.pushPage({'id': 'tid.html', 'title': 'TID'})">
+            <div class="title">TID情報</div>
+            <div class="content">TID からタグのメーカー等を判別します。</div>
+          </ons-card>
+
 
           <ons-card onclick="fn.pushPage({'id': 'pullHook.html', 'title': 'PullHook'})">
             <div class="title">Pull Hook</div>
@@ -259,7 +264,7 @@
               </div>
             </ons-list-item>
             <ons-list-header>変換結果</ons-list-header>
-            <ons-list-item class="inputed-items">
+            <ons-list-item>
               <div class="left">
                 <label id="result-unit"> mW  </label>
                 <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
@@ -349,6 +354,49 @@
           </style>
         </ons-page>
       </template>
+
+      <template id="tid.html">
+        <ons-page id="tid-page">
+          <ons-toolbar>
+            <div class="left">
+              <ons-back-button>TID情報</ons-back-button>
+            </div>
+            <div class="center"></div>
+            <div class="right">
+              <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
+            </div>
+          </ons-toolbar>
+          <ons-list>
+            
+          </ons-list>
+
+          <script>
+            ons.getScriptPage().onInit = function () {
+              if (ons.platform.isAndroid()) {
+                const inputItems = document.querySelectorAll('.input-items');
+                for (i = 0; i < inputItems.length; i++) {
+                  inputItems[i].hasAttribute('modifier') ?
+                    inputItems[i].setAttribute('modifier', inputItems[i].getAttribute('modifier') + ' nodivider') :
+                    inputItems[i].setAttribute('modifier', 'nodivider');
+                }
+              }
+
+              
+            }
+          </script>
+      
+          <style>
+            #lorem-dialog .dialog-container {
+              height: 200px;
+            }
+      
+            ons-list-title {
+              margin-top: 20px;
+            }
+          </style>
+        </ons-page>
+      </template>
+
       
       <template id="forms.html">
         <ons-page id="forms-page">
