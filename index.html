@@ -171,8 +171,8 @@
           </p>
       
           <ons-card onclick="fn.pushPage({'id': 'power.html', 'title': 'mW & dBm'})">
-            <div class="title">mW & dBm </div>
-            <div class="content">dBm と mW の単位変換を行います。</div>
+            <div class="title">電波出力 単位変換</div>
+            <div class="content">電波出力の単位 dBm と mW の単位変換を行います。</div>
           </ons-card>
 
           <ons-card onclick="fn.pushPage({'id': 'pullHook.html', 'title': 'PullHook'})">
@@ -237,13 +237,13 @@
               <label class="left">
                 <ons-radio class="radio-direction" input-id="radio-to-mw" value="dBm" checked></ons-radio>
               </label>
-              <label for="radio-to-mw" class="center">dBmからmWへ変換する</label>
+              <label for="radio-to-mw" class="center">dBm から mW へ変換する</label>
             </ons-list-item>
             <ons-list-item tappable>
               <label class="left">
                 <ons-radio class="radio-direction" input-id="radio-to-dbm" value="mW"></ons-radio>
               </label>
-              <label for="radio-to-dbm" class="center">mWからdBmへ変換する</label>
+              <label for="radio-to-dbm" class="center">mW から dBm へ変換する</label>
             </ons-list-item>
             <ons-list-header>変換</ons-list-header>
             <ons-list-item class="input-items">
@@ -288,9 +288,8 @@
                 return Math.round(val * 10) / 10
               }
               function isNumber(numVal){
-                // チェック条件パターン
+                // 符号(+/-)付きの小数を許可する
                 var pattern = /^[+,-]?([1-9]\d*|0)(\.\d+)?$/;
-                // 数値チェック
                 return pattern.test(numVal);
               }
               function convertToMw(val) {
