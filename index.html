@@ -367,7 +367,19 @@
             </div>
           </ons-toolbar>
           <ons-list>
-            
+            <ons-list-header>TID入力</ons-list-header>
+            <ons-list-item class="input-items">
+              <div class="left">
+                <label id="value-tid"> TID </label>
+                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+              </div>
+              <label class="center">
+                <ons-input input-id="tid-input" float maxlength="8" placeholder="TIDを入力"></ons-input>
+              </label>
+              <div class="right">
+                <ons-button modifier="cta" class="button-margin" id="button-tid-convert">変換する</ons-button>
+              </div>
+            </ons-list-item>
           </ons-list>
 
           <script>
@@ -381,7 +393,22 @@
                 }
               }
 
-              
+              function isValidTid(numVal){
+                // 8文字の16進数を許可する
+                var pattern = /^[0-9A-Fa-f]{8}$/;
+                return pattern.test(numVal);
+              }
+
+              var convertTidButton = document.getElementById('button-tid-convert');
+              var tidInput = document.getElementById('tid-input');
+              var doTidConvert = function (event) {
+                if (!isValidTid(tidInput.value)) {
+                  ons.notification.alert('16進数を入力してください');
+                  return;
+                }
+                console.log(tidInput.value);
+              }
+              convertTidButton.addEventListener('click', doTidConvert);
             }
           </script>
       
@@ -394,6 +421,10 @@
               margin-top: 20px;
             }
           </style>
+
+          <script>
+            
+          </script>
         </ons-page>
       </template>
 
