@@ -7,6 +7,29 @@
   <script src="js/vue.js"></script>
   <script src="js/onsenui.js"></script>
   <script src="js/vue-onsenui.js"></script>
+  <script>
+    //共通関数
+    // 符号(+/-)付きの小数を許可する
+    function isNumber(numVal){
+      var pattern = /^[+,-]?([1-9]\d*|0)(\.\d+)?$/;
+      return pattern.test(numVal);
+    }
+    //16進数文字列からbit文字列に変換
+    function hexToBit(str,length) {
+      var bits = parseInt(str, 16).toString(2);
+      while (bits.length < length) {
+        bits = '0' + bits; 
+      }
+      return bits;
+    }
+    // 指定長の16進数文字列のチェック
+    function isHexString(numVal,length){
+      var pattern = '^[0-9A-Fa-f]{' + length + '}$';
+      var regExp = new RegExp(pattern, '');
+      console.log(pattern);
+      return regExp.test(numVal);
+    }
+  </script>
 </head>
 
 <body>
@@ -271,7 +294,7 @@
             <ons-list-item>
               <div class="left">
                 <label id="result-unit"> mW  </label>
-                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
               </div>
               <label class="center" id="convert-result">
                   
@@ -295,11 +318,6 @@
               }
               function roundValue(val) {
                 return Math.round(val * 10) / 10
-              }
-              function isNumber(numVal){
-                // 符号(+/-)付きの小数を許可する
-                var pattern = /^[+,-]?([1-9]\d*|0)(\.\d+)?$/;
-                return pattern.test(numVal);
               }
               function convertToMw(val) {
                 return roundValue( getBaseLog(10,val) * 10);
@@ -384,6 +402,8 @@
                 <ons-button modifier="cta" class="button-margin" id="button-tid-convert">変換する</ons-button>
               </div>
             </ons-list-item>
+            <ons-list-header>変換結果</ons-list-header>
+            
           </ons-list>
 
           <script>
@@ -397,18 +417,25 @@
                 }
               }
 
-              function isValidTid(numVal){
-                // 8文字の16進数を許可する
-                var pattern = /^[0-9A-Fa-f]{8}$/;
-                return pattern.test(numVal);
-              }
-
               var convertTidButton = document.getElementById('button-tid-convert');
               var tidInput = document.getElementById('tid-input');
               var doTidConvert = function (event) {
-                if (!isValidTid(tidInput.value)) {
-                  ons.notification.alert('16進数を入力してください');
+                if (!isHexString(tidInput.value, 8)) {
+                  ons.notification.alert('16進数8文字を入力してください');
                   return;
+                }
+                var classIdentifierValue = tidInput.value.substr(0,2).toUpperCase();
+                if (classIdentifierValue != 'E0' && classIdentifierValue != 'E2') {
+                  ons.notification.alert('ISO/IEC 15963 に則ったTIDではありません。');
+                  return;
+                }
+                var bits = hexToBit(tidInput.value);
+                if (classIdentifierValue == 'E0') {
+                  
+                } else if (classIdentifierValue == 'E2') {
+                  
+                  console.log(bits);
+
                 }
                 console.log(tidInput.value);
               }
@@ -461,7 +488,7 @@
             <ons-list-item>
               <div class="left">
                 <label id="label-epcLength"> EPC長 (bit) </label>
-                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
               </div>
               <div class="center">
                 <label id="label-value-epcLength">  </label>
@@ -470,7 +497,7 @@
             <ons-list-item>
               <div class="left">
                 <label id="label-umi"> UMI : User-memory indicator </label>
-                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
               </div>
               <div class="center">
                 <label id="label-value-umi">  </label>
@@ -479,7 +506,7 @@
             <ons-list-item>
               <div class="left">
                 <label id="label-xi"> XI : XPC_W1 indicator </label>
-                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
               </div>
               <div class="center">
                 <label id="label-value-xi">  </label>
@@ -488,7 +515,7 @@
             <ons-list-item>
               <div class="left">
                 <label id="label-nsi"> NSI : Numbering System Identifier </label>
-                <ons-icon icon="fa-angle-right" class="list-item__icon"></ons-icon>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
               </div>
               <div class="center">
                 <label id="label-value-nsi">  </label>
@@ -505,19 +532,6 @@
                     inputItems[i].setAttribute('modifier', inputItems[i].getAttribute('modifier') + ' nodivider') :
                     inputItems[i].setAttribute('modifier', 'nodivider');
                 }
-              }
-
-              function isValidPc(numVal){
-                // 4文字の16進数を許可する
-                var pattern = /^[0-9A-Fa-f]{4}$/;
-                return pattern.test(numVal);
-              }
-              function pcToBit(str) {
-                var bits = parseInt(pcInput.value, 16).toString(2);
-                while (bits.length < 16) {
-                  bits = '0' + bits; 
-                }
-                return bits;
               }
               function parsePcBits(bits) {
                 return {
@@ -538,13 +552,11 @@
               var xiLabel = document.getElementById('label-value-xi');
               var nsiLabel = document.getElementById('label-value-nsi');
               var doPcConvert = function (event) {
-                if (!isValidPc(pcInput.value)) {
-                  ons.notification.alert('16進数を入力してください');
+                if (!isHexString(pcInput.value, 4)) {
+                  ons.notification.alert('16進数4文字を入力してください');
                   return;
                 }
-                console.log(pcInput.value);
-                console.log(pcToBit(pcInput.value));
-                var pcConfs = parsePcBits( pcToBit( pcInput.value ));
+                var pcConfs = parsePcBits( hexToBit(pcInput.value, 16));
                 epcLengthLabel.innerHTML = calcEpcLen(pcConfs['EpcLength']);
                 umiLabel.innerHTML = pcConfs['UMI'];
                 xiLabel.innerHTML = pcConfs['XI'];
