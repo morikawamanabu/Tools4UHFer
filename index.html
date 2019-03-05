@@ -403,7 +403,33 @@
               </div>
             </ons-list-item>
             <ons-list-header>変換結果</ons-list-header>
-            
+            <ons-list-item>
+              <div class="left">
+                <label id="label-epcLength"> XTID (X) indicator </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-xTid">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-epcLength"> Security (S) indicator </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-security">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-epcLength"> File (F) indicator </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-file">  </label>
+              </div>
+            </ons-list-item>
           </ons-list>
 
           <script>
@@ -417,9 +443,9 @@
                 }
               }
 
-              var convertTidButton = document.getElementById('button-tid-convert');
-              var tidInput = document.getElementById('tid-input');
-              var doTidConvert = function (event) {
+              const convertTidButton = document.getElementById('button-tid-convert');
+              const tidInput = document.getElementById('tid-input');
+              const doTidConvert = function (event) {
                 if (!isHexString(tidInput.value, 8)) {
                   ons.notification.alert('16進数8文字を入力してください');
                   return;
@@ -429,13 +455,33 @@
                   ons.notification.alert('ISO/IEC 15963 に則ったTIDではありません。');
                   return;
                 }
-                var bits = hexToBit(tidInput.value);
+                const bits = hexToBit(tidInput.value);
                 if (classIdentifierValue == 'E0') {
                   
                 } else if (classIdentifierValue == 'E2') {
-                  
-                  console.log(bits);
+                  const xTIDFlag = bits.substr(8,1);
+                  const xTidLabel = document.getElementById('label-value-xTid');
+                  if (xTIDFlag == '0') {
+                    xTidLabel.innerText = "Without XTID";
+                  } else if (xTIDFlag == '1') {
+                    xTidLabel.innerText = "With XTID";
+                  }
 
+                  const securityFlag = bits.substr(9,1);
+                  const securityLabel = document.getElementById('label-value-security');
+                  if (securityFlag == '0') {
+                    securityLabel.innerText = "Not supports the Authenticate and/or Challengecommands";
+                  } else if (securityFlag == '1') {
+                    securityLabel.innerText = "Supports the Authenticate and/or Challengecommands";
+                  }
+
+                  const fileFlag = bits.substr(10,1);
+                  const fileLabel = document.getElementById('label-value-file');
+                  if (fileFlag == '0') {
+                    fileLabel.innerText = "Not supports the FileOpen command";
+                  } else if (fileFlag == '1') {
+                    fileLabel.innerText = "Supports the FileOpen command";
+                  }
                 }
                 console.log(tidInput.value);
               }
