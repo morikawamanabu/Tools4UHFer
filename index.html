@@ -7,6 +7,7 @@
   <script src="js/vue.js"></script>
   <script src="js/onsenui.js"></script>
   <script src="js/vue-onsenui.js"></script>
+  <script type="text/javascript" src="dictionary/mdid.js"></script>
   <script>
     //共通関数
     // 符号(+/-)付きの小数を許可する
@@ -483,8 +484,10 @@
                     fileLabel.innerText = "Supports the FileOpen command";
                   }
 
-                  const mdid = bits.substr(11,9);
-                  console.log(mdid);
+                  //const mdid = bits.substr(11,9);
+                  //console.log(mdid);
+                  var obj = JSON.parse(mdidDic);
+                  console.log(obj[0]);
                 }
                 console.log(tidInput.value);
               }
