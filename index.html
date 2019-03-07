@@ -431,6 +431,24 @@
                 <label id="label-value-file">  </label>
               </div>
             </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-mdid"> MDID </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-mdid">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-company"> Company </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-company">  </label>
+              </div>
+            </ons-list-item>
           </ons-list>
 
           <script>
@@ -484,10 +502,17 @@
                     fileLabel.innerText = "Supports the FileOpen command";
                   }
 
-                  //const mdid = bits.substr(11,9);
-                  //console.log(mdid);
-                  var obj = JSON.parse(mdidDic);
-                  console.log(obj[0]);
+                  const mdidLabel = document.getElementById('label-value-mdid');
+                  const companyLabel = document.getElementById('label-value-company');
+                  const inputId = bits.substr(11,9);
+                  mdidLabel.innerText = inputId;
+                  var mdidList = JSON.parse(mdidDic);
+                  var i = 0;
+                  for (i = 0; i < mdidList.length; i++) {
+                    if (Object.keys(mdidList[i])[0] == inputId) {
+                      companyLabel.innerText = mdidList[i][inputId]["company"];
+                    }
+                  }
                 }
                 console.log(tidInput.value);
               }
