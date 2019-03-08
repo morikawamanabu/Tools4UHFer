@@ -446,7 +446,7 @@
                 <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
               </div>
               <div class="center">
-                <label id="label-value-company">  </label>
+                <label> <a id="a-value-company" target="_blank"> </a> </label>
               </div>
             </ons-list-item>
           </ons-list>
@@ -503,15 +503,24 @@
                   }
 
                   const mdidLabel = document.getElementById('label-value-mdid');
-                  const companyLabel = document.getElementById('label-value-company');
+                  const companyLink = document.getElementById('a-value-company');
                   const inputId = bits.substr(11,9);
                   mdidLabel.innerText = inputId;
                   var mdidList = JSON.parse(mdidDic);
-                  var i = 0;
-                  for (i = 0; i < mdidList.length; i++) {
-                    if (Object.keys(mdidList[i])[0] == inputId) {
-                      companyLabel.innerText = mdidList[i][inputId]["company"];
+                  
+                  var index = 0;
+                  while (index < mdidList.length + 1) {
+                    if (index == mdidList.length) {
+                      //Not Found
+                      ons.notification.alert('MDIDが登録されていません。');
+                      return;
                     }
+                    if (Object.keys(mdidList[index])[0] == inputId) {
+                      companyLink.innerText = mdidList[index][inputId]["company"];
+                      companyLink.href = mdidList[index][inputId]["url"];
+                      break;
+                    }
+                    index++;
                   }
                 }
                 console.log(tidInput.value);
