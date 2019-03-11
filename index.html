@@ -539,6 +539,7 @@
                       if (Object.keys(mdidList[index])[0] == inputId) {
                         companyLink.innerText = mdidList[index][inputId]["company"];
                         companyLink.href = mdidList[index][inputId]["url"];
+                        console.log("dictionary/"+mdidList[index][inputId]["model"]);
                         loadScript("dictionary/"+mdidList[index][inputId]["model"], function() {
                           console.log('script loaded');
                           console.log(tagDic);
