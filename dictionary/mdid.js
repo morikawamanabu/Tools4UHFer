@@ -14,7 +14,8 @@ var mdidDic = '[\
     {\
         "000000011": {\
             "company": "Alien Technology",\
-            "url": "http://www.alientechnology.com/"\
+            "url": "http://www.alientechnology.com/",\
+            "model": "alien.js"\
         }\
     },\
     {\

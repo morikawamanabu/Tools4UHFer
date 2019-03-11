@@ -7,7 +7,6 @@
   <script src="js/vue.js"></script>
   <script src="js/onsenui.js"></script>
   <script src="js/vue-onsenui.js"></script>
-  <script type="text/javascript" src="dictionary/mdid.js"></script>
   <script>
     //共通関数
     // 符号(+/-)付きの小数を許可する
@@ -24,11 +23,31 @@
       return bits;
     }
     // 指定長の16進数文字列のチェック
-    function isHexString(numVal,length){
+    function isHexString(numVal,length) {
       var pattern = '^[0-9A-Fa-f]{' + length + '}$';
       var regExp = new RegExp(pattern, '');
       console.log(pattern);
       return regExp.test(numVal);
+    }
+    //JSを動的に読み込む
+    function loadScript(src, callback) {
+      var done = false;
+      var head = document.getElementsByTagName('head')[0];
+      var script = document.createElement('script');
+      script.src = src;
+      head.appendChild(script);
+      // Attach handlers for all browsers
+      script.onload = script.onreadystatechange = function() {
+        if ( !done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") ) {
+          done = true;
+          callback();
+          // Handle memory leak in IE
+          script.onload = script.onreadystatechange = null;
+          if ( head && script.parentNode ) {
+              head.removeChild( script );
+          }
+        }
+      } 
     }
   </script>
 </head>
@@ -478,50 +497,61 @@
                 if (classIdentifierValue == 'E0') {
                   
                 } else if (classIdentifierValue == 'E2') {
-                  const xTIDFlag = bits.substr(8,1);
-                  const xTidLabel = document.getElementById('label-value-xTid');
-                  if (xTIDFlag == '0') {
-                    xTidLabel.innerText = "Without XTID";
-                  } else if (xTIDFlag == '1') {
-                    xTidLabel.innerText = "With XTID";
-                  }
-
-                  const securityFlag = bits.substr(9,1);
-                  const securityLabel = document.getElementById('label-value-security');
-                  if (securityFlag == '0') {
-                    securityLabel.innerText = "Not supports the Authenticate and/or Challengecommands";
-                  } else if (securityFlag == '1') {
-                    securityLabel.innerText = "Supports the Authenticate and/or Challengecommands";
-                  }
-
-                  const fileFlag = bits.substr(10,1);
-                  const fileLabel = document.getElementById('label-value-file');
-                  if (fileFlag == '0') {
-                    fileLabel.innerText = "Not supports the FileOpen command";
-                  } else if (fileFlag == '1') {
-                    fileLabel.innerText = "Supports the FileOpen command";
-                  }
-
-                  const mdidLabel = document.getElementById('label-value-mdid');
-                  const companyLink = document.getElementById('a-value-company');
-                  const inputId = bits.substr(11,9);
-                  mdidLabel.innerText = inputId;
-                  var mdidList = JSON.parse(mdidDic);
-                  
-                  var index = 0;
-                  while (index < mdidList.length + 1) {
-                    if (index == mdidList.length) {
-                      //Not Found
-                      ons.notification.alert('MDIDが登録されていません。');
-                      return;
+                  loadScript("dictionary/mdid.js", function() {
+                    const xTIDFlag = bits.substr(8,1);
+                    const xTidLabel = document.getElementById('label-value-xTid');
+                    if (xTIDFlag == '0') {
+                      xTidLabel.innerText = "Without XTID";
+                    } else if (xTIDFlag == '1') {
+                      xTidLabel.innerText = "With XTID";
                     }
-                    if (Object.keys(mdidList[index])[0] == inputId) {
-                      companyLink.innerText = mdidList[index][inputId]["company"];
-                      companyLink.href = mdidList[index][inputId]["url"];
-                      break;
+
+                    const securityFlag = bits.substr(9,1);
+                    const securityLabel = document.getElementById('label-value-security');
+                    if (securityFlag == '0') {
+                      securityLabel.innerText = "Not supports the Authenticate and/or Challengecommands";
+                    } else if (securityFlag == '1') {
+                      securityLabel.innerText = "Supports the Authenticate and/or Challengecommands";
                     }
-                    index++;
-                  }
+
+                    const fileFlag = bits.substr(10,1);
+                    const fileLabel = document.getElementById('label-value-file');
+                    if (fileFlag == '0') {
+                      fileLabel.innerText = "Not supports the FileOpen command";
+                    } else if (fileFlag == '1') {
+                      fileLabel.innerText = "Supports the FileOpen command";
+                    }
+
+                    const mdidLabel = document.getElementById('label-value-mdid');
+                    const companyLink = document.getElementById('a-value-company');
+                    const inputId = bits.substr(11,9);
+                    mdidLabel.innerText = inputId;
+                    const mdidList = JSON.parse(mdidDic);
+                    var tagModelList = null;
+                    
+                    var index = 0;
+                    while (index < mdidList.length + 1) {
+                      if (index == mdidList.length) {
+                        //Not Found
+                        ons.notification.alert('MDIDが登録されていません。');
+                        return;
+                      }
+                      if (Object.keys(mdidList[index])[0] == inputId) {
+                        companyLink.innerText = mdidList[index][inputId]["company"];
+                        companyLink.href = mdidList[index][inputId]["url"];
+                        loadScript("dictionary/"+mdidList[index][inputId]["model"], function() {
+                          console.log('script loaded');
+                          console.log(tagDic);
+                        });
+                        break;
+                      }
+                      index++;
+                    }
+
+                    const inputTagModel = bits.substr(20,12);
+
+                    console.log(inputTagModel);
+                  });
                 }
                 console.log(tidInput.value);
               }
