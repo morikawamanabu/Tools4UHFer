@@ -481,6 +481,33 @@
                 <label> <a id="a-value-company" target="_blank"> </a> </label>
               </div>
             </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-model"> Model </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-model">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-epc"> EPC </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-epc">  </label>
+              </div>
+            </ons-list-item>
+            <ons-list-item>
+              <div class="left">
+                <label id="label-user"> User </label>
+                <ons-icon icon="fa-angle-double-right" class="list-item__icon"></ons-icon>
+              </div>
+              <div class="center">
+                <label id="label-value-user">  </label>
+              </div>
+            </ons-list-item>
           </ons-list>
 
           <script>
@@ -542,24 +569,34 @@
                     const mdidList = JSON.parse(mdidDic);
                     var tagModelList = null;
 
-                    const index = indexOf(mdidList, inputId);
-                    if (index < 0) {
+                    const indexOfMdid = indexOf(mdidList, inputId);
+                    if (indexOfMdid < 0) {
                       //Not Found
                       ons.notification.alert('MDIDが登録されていません。');
                       return;
                     }
                     
-                    companyLink.innerText = mdidList[index][inputId]["company"];
-                    companyLink.href = mdidList[index][inputId]["url"];
-                    console.log("dictionary/"+mdidList[index][inputId]["model"]);
-                    loadScript("dictionary/"+mdidList[index][inputId]["model"], function() {
+                    companyLink.innerText = mdidList[indexOfMdid][inputId]['company'];
+                    companyLink.href = mdidList[indexOfMdid][inputId]['url'];
+                    console.log("dictionary/"+mdidList[indexOfMdid][inputId]['model']);
+                    loadScript("dictionary/"+mdidList[indexOfMdid][inputId]['model'], function() {
                       console.log('script loaded');
-                      console.log(tagDic);
+                      const modelLabel = document.getElementById('label-value-model');
+                      const epcLabel = document.getElementById('label-value-epc');
+                      const userLabel = document.getElementById('label-value-user');
+
+                      const tagModelList = JSON.parse(tagDic);
+                      const inputTagModel = bits.substr(20,12);
+                      const indexOfModel = indexOf(tagModelList, inputTagModel);
+                      if (indexOfModel < 0) {
+                        //Not Found
+                        ons.notification.alert('該当するタグは登録されていません。');
+                        return;
+                      }
+                      modelLabel.innerText = tagModelList[indexOfModel][inputTagModel]['name'];
+                      epcLabel.innerText = tagModelList[indexOfModel][inputTagModel]['epc'];
+                      userLabel.innerText = tagModelList[indexOfModel][inputTagModel]['user'];
                     });
-
-                    const inputTagModel = bits.substr(20,12);
-
-                    console.log(inputTagModel);
                   });
                 }
                 console.log(tidInput.value);
