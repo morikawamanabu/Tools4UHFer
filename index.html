@@ -49,6 +49,19 @@
         }
       } 
     }
+    //指定されたkeyがJsonObjectの何番目の要素かを返す
+    function indexOf(jsonObj, key) {
+      var ret = -1;
+      var index = 0;
+      while (index < jsonObj.length) {
+        if (Object.keys(jsonObj[index])[0] == key) {
+          ret = index;
+          break;
+        }
+        index++;
+      }
+      return ret;
+    }
   </script>
 </head>
 
@@ -528,26 +541,21 @@
                     mdidLabel.innerText = inputId;
                     const mdidList = JSON.parse(mdidDic);
                     var tagModelList = null;
-                    
-                    var index = 0;
-                    while (index < mdidList.length + 1) {
-                      if (index == mdidList.length) {
-                        //Not Found
-                        ons.notification.alert('MDIDが登録されていません。');
-                        return;
-                      }
-                      if (Object.keys(mdidList[index])[0] == inputId) {
-                        companyLink.innerText = mdidList[index][inputId]["company"];
-                        companyLink.href = mdidList[index][inputId]["url"];
-                        console.log("dictionary/"+mdidList[index][inputId]["model"]);
-                        loadScript("dictionary/"+mdidList[index][inputId]["model"], function() {
-                          console.log('script loaded');
-                          console.log(tagDic);
-                        });
-                        break;
-                      }
-                      index++;
+
+                    const index = indexOf(mdidList, inputId);
+                    if (index < 0) {
+                      //Not Found
+                      ons.notification.alert('MDIDが登録されていません。');
+                      return;
                     }
+                    
+                    companyLink.innerText = mdidList[index][inputId]["company"];
+                    companyLink.href = mdidList[index][inputId]["url"];
+                    console.log("dictionary/"+mdidList[index][inputId]["model"]);
+                    loadScript("dictionary/"+mdidList[index][inputId]["model"], function() {
+                      console.log('script loaded');
+                      console.log(tagDic);
+                    });
 
                     const inputTagModel = bits.substr(20,12);
 
