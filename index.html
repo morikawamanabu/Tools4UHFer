@@ -521,9 +521,31 @@
                 }
               }
 
+              //結果表示
+              const xTidLabel = document.getElementById('label-value-xTid');
+              const securityLabel = document.getElementById('label-value-security');
+              const fileLabel = document.getElementById('label-value-file');
+              const mdidLabel = document.getElementById('label-value-mdid');
+              const companyLink = document.getElementById('a-value-company');
+              const modelLabel = document.getElementById('label-value-model');
+              const epcLabel = document.getElementById('label-value-epc');
+              const userLabel = document.getElementById('label-value-user');
+              const clearResults = function () {
+                xTidLabel.innerText = "";
+                securityLabel.innerText = "";
+                fileLabel.innerText = "";
+                mdidLabel.innerText = "";
+                companyLink.innerText = "";
+                companyLink.href = "";
+                modelLabel.innerText = "";
+                epcLabel.innerText = "";
+                userLabel.innerText = "";
+              }
+
               const convertTidButton = document.getElementById('button-tid-convert');
               const tidInput = document.getElementById('tid-input');
               const doTidConvert = function (event) {
+                clearResults();
                 if (!isHexString(tidInput.value, 8)) {
                   ons.notification.alert('16進数8文字を入力してください');
                   return;
@@ -539,7 +561,6 @@
                 } else if (classIdentifierValue == 'E2') {
                   loadScript("dictionary/mdid.js", function() {
                     const xTIDFlag = bits.substr(8,1);
-                    const xTidLabel = document.getElementById('label-value-xTid');
                     if (xTIDFlag == '0') {
                       xTidLabel.innerText = "Without XTID";
                     } else if (xTIDFlag == '1') {
@@ -547,7 +568,6 @@
                     }
 
                     const securityFlag = bits.substr(9,1);
-                    const securityLabel = document.getElementById('label-value-security');
                     if (securityFlag == '0') {
                       securityLabel.innerText = "Not supports the Authenticate and/or Challengecommands";
                     } else if (securityFlag == '1') {
@@ -555,15 +575,12 @@
                     }
 
                     const fileFlag = bits.substr(10,1);
-                    const fileLabel = document.getElementById('label-value-file');
                     if (fileFlag == '0') {
                       fileLabel.innerText = "Not supports the FileOpen command";
                     } else if (fileFlag == '1') {
                       fileLabel.innerText = "Supports the FileOpen command";
                     }
 
-                    const mdidLabel = document.getElementById('label-value-mdid');
-                    const companyLink = document.getElementById('a-value-company');
                     const inputId = bits.substr(11,9);
                     mdidLabel.innerText = inputId;
                     const mdidList = JSON.parse(mdidDic);
@@ -578,13 +595,7 @@
                     
                     companyLink.innerText = mdidList[indexOfMdid][inputId]['company'];
                     companyLink.href = mdidList[indexOfMdid][inputId]['url'];
-                    console.log("dictionary/"+mdidList[indexOfMdid][inputId]['model']);
                     loadScript("dictionary/"+mdidList[indexOfMdid][inputId]['model'], function() {
-                      console.log('script loaded');
-                      const modelLabel = document.getElementById('label-value-model');
-                      const epcLabel = document.getElementById('label-value-epc');
-                      const userLabel = document.getElementById('label-value-user');
-
                       const tagModelList = JSON.parse(tagDic);
                       const inputTagModel = bits.substr(20,12);
                       const indexOfModel = indexOf(tagModelList, inputTagModel);
