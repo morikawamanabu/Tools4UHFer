@@ -2,7 +2,8 @@ var mdidDic = '[\
     {\
         "000000001": {\
             "company": "Impinj",\
-            "url": "http://www.impinj.com/"\
+            "url": "http://www.impinj.com/",\
+            "model": "impinj.js"\
         }\
     },\
     {\

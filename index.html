@@ -742,10 +742,10 @@
                   return;
                 }
                 var pcConfs = parsePcBits( hexToBit(pcInput.value, 16));
-                epcLengthLabel.innerHTML = calcEpcLen(pcConfs['EpcLength']);
-                umiLabel.innerHTML = pcConfs['UMI'];
-                xiLabel.innerHTML = pcConfs['XI'];
-                nsiLabel.innerHTML = pcConfs['NSI'];
+                epcLengthLabel.innerText = calcEpcLen(pcConfs['EpcLength']);
+                umiLabel.innerText = pcConfs['UMI'];
+                xiLabel.innerText = pcConfs['XI'];
+                nsiLabel.innerText = pcConfs['NSI'];
               }
               convertPcButton.addEventListener('click', doPcConvert);
             }
