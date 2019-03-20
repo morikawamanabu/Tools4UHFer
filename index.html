@@ -706,6 +706,19 @@
                     inputItems[i].setAttribute('modifier', 'nodivider');
                 }
               }
+
+              //結果表示
+              const epcLengthLabel = document.getElementById('label-value-epcLength');
+              const umiLabel = document.getElementById('label-value-umi');
+              const xiLabel = document.getElementById('label-value-xi');
+              const nsiLabel = document.getElementById('label-value-nsi');
+              const clearResults = function () {
+                epcLengthLabel.innerText = "";
+                umiLabel.innerText = "";
+                xiLabel.innerText = "";
+                nsiLabel.innerText = "";
+              }
+
               function parsePcBits(bits) {
                 return {
                           'EpcLength': bits.substr(0,5), 
@@ -720,11 +733,10 @@
 
               var convertPcButton = document.getElementById('button-pc-convert');
               var pcInput = document.getElementById('pc-input');
-              var epcLengthLabel = document.getElementById('label-value-epcLength');
-              var umiLabel = document.getElementById('label-value-umi');
-              var xiLabel = document.getElementById('label-value-xi');
-              var nsiLabel = document.getElementById('label-value-nsi');
+              
+              
               var doPcConvert = function (event) {
+                clearResults();
                 if (!isHexString(pcInput.value, 4)) {
                   ons.notification.alert('16進数4文字を入力してください');
                   return;
