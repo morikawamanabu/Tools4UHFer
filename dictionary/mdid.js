@@ -34,7 +34,8 @@ var mdidDic = '[\
     {\
         "000000110": {\
             "company": "NXP Semiconductors",\
-            "url": "http://www.nxp.com/#/homepage"\
+            "url": "http://www.nxp.com/#/homepage",\
+            "model": "nxp.js"\
         }\
     },\
     {\
