@@ -223,18 +223,18 @@
       <template id="home.html">
         <ons-page>
           <p class="intro">
-            This is a kitchen sink example that shows off the components of Onsen UI.<br><br>
+            UHF関係のツール集です。<br><br>
           </p>
       
-          <ons-card onclick="fn.pushPage({'id': 'power.html', 'title': 'mW & dBm'})">
+          <ons-card onclick="fn.pushPage({'id': 'power.html', 'title': '電波出力 単位変換'})">
             <div class="title">電波出力 単位変換</div>
             <div class="content">電波出力の単位 dBm と mW の単位変換を行います。</div>
           </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'tid.html', 'title': 'TID'})">
+          <ons-card onclick="fn.pushPage({'id': 'tid.html', 'title': 'TID情報'})">
             <div class="title">TID情報</div>
             <div class="content">入力されたTIDからタグの情報を調べます。</div>
           </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'pc.html', 'title': 'PC'})">
+          <ons-card onclick="fn.pushPage({'id': 'pc.html', 'title': 'PC情報'})">
             <div class="title">PC情報</div>
             <div class="content">入力されたPCの情報を表示します。</div>
           </ons-card>
@@ -286,15 +286,12 @@
       </template>
 
       <template id="power.html">
-        <ons-page id="power-page">
+        <ons-page>
           <ons-toolbar>
             <div class="left">
               <ons-back-button>ホーム</ons-back-button>
             </div>
             <div class="center"></div>
-            <div class="right">
-              <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
-            </div>
           </ons-toolbar>
           <ons-list>
             <ons-list-header>変換方式</ons-list-header>
@@ -337,6 +334,7 @@
 
           <script>
             ons.getScriptPage().onInit = function () {
+              this.querySelector('ons-toolbar div.center').textContent = this.data.title;
               if (ons.platform.isAndroid()) {
                 const inputItems = document.querySelectorAll('.input-items');
                 for (i = 0; i < inputItems.length; i++) {
@@ -414,12 +412,9 @@
         <ons-page id="tid-page">
           <ons-toolbar>
             <div class="left">
-              <ons-back-button>TID情報</ons-back-button>
+              <ons-back-button>ホーム</ons-back-button>
             </div>
             <div class="center"></div>
-            <div class="right">
-              <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
-            </div>
           </ons-toolbar>
           <ons-list>
             <ons-list-header>TID入力</ons-list-header>
@@ -512,6 +507,7 @@
 
           <script>
             ons.getScriptPage().onInit = function () {
+              this.querySelector('ons-toolbar div.center').textContent = this.data.title;
               if (ons.platform.isAndroid()) {
                 const inputItems = document.querySelectorAll('.input-items');
                 for (i = 0; i < inputItems.length; i++) {
@@ -636,12 +632,9 @@
         <ons-page id="pc-page">
           <ons-toolbar>
             <div class="left">
-              <ons-back-button>PC情報</ons-back-button>
+              <ons-back-button>ホーム</ons-back-button>
             </div>
             <div class="center"></div>
-            <div class="right">
-              <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
-            </div>
           </ons-toolbar>
           <ons-list>
             <ons-list-header>PC入力</ons-list-header>
@@ -698,6 +691,7 @@
 
           <script>
             ons.getScriptPage().onInit = function () {
+              this.querySelector('ons-toolbar div.center').textContent = this.data.title;
               if (ons.platform.isAndroid()) {
                 const inputItems = document.querySelectorAll('.input-items');
                 for (i = 0; i < inputItems.length; i++) {
