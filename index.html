@@ -86,9 +86,7 @@
             </div>
           </ons-toolbar>
           <ons-tabbar swipeable id="appTabbar" position="auto">
-            <ons-tab label="Home" page="home.html" active></ons-tab>
-            <!-- <ons-tab label="Forms" icon="ion-edit" page="forms.html"></ons-tab>
-            <ons-tab label="Animations" icon="ion-film-marker" page="animations.html"></ons-tab> -->
+            <ons-tab page="home.html"></ons-tab>
           </ons-tabbar>
       
           <script>
@@ -238,33 +236,6 @@
             <div class="title">PC情報</div>
             <div class="content">入力されたPCの情報を表示します。</div>
           </ons-card>
-
-
-          <!-- <ons-card onclick="fn.pushPage({'id': 'pullHook.html', 'title': 'PullHook'})">
-            <div class="title">Pull Hook</div>
-            <div class="content">Simple "pull to refresh" functionality to update data.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'dialogs.html', 'title': 'Dialogs'})">
-            <div class="title">Dialogs</div>
-            <div class="content">Components and utility methods to display many types of dialogs.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'buttons.html', 'title': 'Buttons'})">
-            <div class="title">Buttons</div>
-            <div class="content">Different styles for buttons, floating action buttons and speed dials.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'carousel.html', 'title': 'Carousel'})">
-            <div class="title">Carousel</div>
-            <div class="content">Customizable carousel that can be optionally fullscreen.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'infiniteScroll.html', 'title': 'Infinite Scroll'})">
-            <div class="title">Infinite Scroll</div>
-            <div class="content">Two types of infinite lists: "Load More" and "Lazy Repeat".</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'progress.html', 'title': 'Progress'})">
-            <div class="title">Progress</div>
-            <div class="content">Linear progress, circular progress and spinners.</div>
-          </ons-card> -->
-      
           <style>
             .intro {
               text-align: center;
@@ -344,6 +315,17 @@
                 }
               }
 
+              //結果表示
+              const valueInput = document.getElementById('value-input');
+              const resultLabel = document.getElementById('convert-result');
+              const clearResults = function () {
+                resultLabel.innerText = "";
+              }
+              function clearValues() {
+                valueInput.value = "";
+                resultLabel.innerText = "";
+              }
+
               function getBaseLog(x, y) {
                 return Math.log(y) / Math.log(x);
               }
@@ -355,10 +337,6 @@
               }
               function convertToDbm(val) {
                 return roundValue( 10 ** (val / 10) );
-              }
-              function clearValues() {
-                document.getElementById('value-input').value = "";
-                document.getElementById('convert-result').innerHTML = "";
               }
 
               var currentDirectionId = 'radio-to-mw';
@@ -376,20 +354,20 @@
                 })
               }
               var convertButton = document.getElementById('button-convert');
-              var valueInput = document.getElementById('value-input');
               var doConvert = function (event) {
+                clearResults();
                 if (currentDirectionId == 'radio-to-mw') {
                   if (!isNumber(valueInput.value)) {
                     ons.notification.alert('数値を入力してください');
                     return;
                   }
-                  document.getElementById('convert-result').innerHTML = convertToDbm(valueInput.value - 0);
+                  resultLabel.innerText = convertToDbm(valueInput.value - 0);
                 } else {
                   if (!isNumber(valueInput.value)) {
                     ons.notification.alert('数値を入力してください');
                     return;
                   }
-                  document.getElementById('convert-result').innerHTML = convertToMw(valueInput.value - 0);
+                  resultLabel.innerText = convertToMw(valueInput.value - 0);
                 }
               }
               convertButton.addEventListener('click', doConvert);
