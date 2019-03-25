@@ -95,7 +95,8 @@ var mdidDic = '[\
     {\
         "000010000": {\
             "company": "Fujitsu",\
-            "url": "http://www.fujitsu.com/"\
+            "url": "http://www.fujitsu.com/",\
+            "model": "fujitsu.js"\
         }\
     },\
     {\
